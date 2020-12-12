@@ -5,9 +5,12 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">
-                        MY STORIES
+                    <div class="card-header d-flex justify-content-between">
+                        <div>MY STORIES</div>
+                        <div class="btn btn-success" data-toggle="modal" data-target="#createStory">CREATE STORY
+                        </div>
                     </div>
+                    @include('stories.createstory')
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
@@ -30,52 +33,26 @@
                                     <td>{{ $story->type }}</td>
                                     <td>{{ $story->status }}</td>
                                     <td>{{ $story->user->email }}</td>
-                                    <td><div class="btn btn-danger">DELETE</div> <div class="btn btn-info" data-toggle="modal" data-target="#exampleModal">UPDATE</div></td>
+
+                                        <td>
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <form action="{{ route('stories.destroy',$story->id) }}" name="s{{$story->id}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{$story->id}}">
+                                                        @method('DELETE')<button type="submit" class="btn btn-danger">DELETE</button>
+                                                    </form>
+                                                </div><div>
+                                                    <div class="btn btn-info" data-toggle="modal" data-target="#exampleModal{{$story->id}}">UPDATE</div>
+
+                                                </div>
+                                                @include('stories.editstory')
+                                            </div>
+                                        </td>
+
                                 </tr>
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">{{$story->title}}</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form role="form" action="{{ route('stories.update',$story->id) }}" method="POST">
-                                                @csrf
-                                            <div class="modal-body">
 
-                                                <div class="form-group">
-                                                    <label for="title">Title</label>
-                                                    <input type="text" class="form-control" id="title" value="{{ $story->title }}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="body">Body</label>
-                                                    <input type="text" class="form-control" id="body" value="{{ $story->body }}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="tittypele">Type</label>
-                                                    <input type="text" class="form-control" id="type" value="{{ $story->type }}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="status">Status</label>
-{{--                                                    <input type="text" class="form-control" id="status" value="{{ $story->status }}">--}}
-                                                    <select class="form-control" name="status" id="">
-                                                        <option value="0"> No</option>
-                                                        <option value="1" {{$story->status==1 ? 'selected' : ''}}> Yes</option>
-                                                    </select>
-                                                </div>
 
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
-
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                                 @endforeach
                             </tbody>
                         </table>

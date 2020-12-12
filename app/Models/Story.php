@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Story extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $fillable=['title','body','type','status'];
     public function user(){
         return $this->belongsTo('App\Models\User');
     }

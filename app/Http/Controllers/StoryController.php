@@ -37,7 +37,14 @@ class StoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=$request->validate([
+            'title'=>'required',
+            'body'=>'required',
+            'type'=>'required',
+            'status'=>'required'
+        ]);
+        Auth::user()->stories()->create($data);
+        return redirect()->back();
     }
 
     /**
@@ -48,7 +55,7 @@ class StoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return Story::find($id)->body;
     }
 
     /**
@@ -59,7 +66,7 @@ class StoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd(Story::find($id));
     }
 
     /**
@@ -71,7 +78,14 @@ class StoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'body'=>'required',
+            'type'=>'required',
+            'status'=>'required'
+        ]);
+        Story::findOrFail($id)->update(['title'=>$request->title,'body'=>$request->body,'type'=>$request->type,'status'=>$request->status]);
+        return redirect()->back();
     }
 
     /**
@@ -80,8 +94,9 @@ class StoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        Story::findOrFail($request->id)->delete();
+        return redirect()->back();
     }
 }
