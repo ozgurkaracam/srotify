@@ -55,7 +55,8 @@ class StoryController extends Controller
      */
     public function show($id)
     {
-        return Story::find($id)->body;
+        $this->authorize('view',Story::find($id));
+        return Story::findOrFail($id)->body;
     }
 
     /**

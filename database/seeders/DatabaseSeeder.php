@@ -14,17 +14,27 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+
+    public function run(Faker $faker)
     {
+        $d=['short','long'];
         for($i=0;$i<rand(3,10);$i++){
-            $faker=new Faker();
             $u=User::create([
-                'name' => $this->faker->name,
-                'email' => $this->faker->unique()->safeEmail,
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
             ]);
+            for($j=0;$j<rand(3,15);$j++){
+                $u->stories()->create([
+                    'title'=>$faker->word,
+                    'body'=>$faker->sentence,
+                    'type'=>$d[rand(0,1)],
+                    'status'=>rand(0,1)
+                ]);
+            }
+
         }
     }
 }
