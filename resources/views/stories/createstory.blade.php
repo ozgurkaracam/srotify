@@ -27,11 +27,14 @@
                     </div>
                     <div class="form-group">
                         <label for="body">Body</label>
-                        <input type="text" class="form-control" name="body" id="body" value="">
+                        <textarea name="body" id="body" cols="30" rows="10" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="tittypele">Type</label>
-                        <input type="text" class="form-control" name="type" id="type" value="">
+                        <select name="type" id="type" class="form-control">
+                            <option value="short">Short</option>
+                            <option value="long">Long</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>

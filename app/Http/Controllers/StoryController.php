@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StoryCreated;
 use App\Models\Story;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class StoryController extends Controller
 {
@@ -44,6 +46,7 @@ class StoryController extends Controller
             'status'=>'required'
         ]);
         Auth::user()->stories()->create($data);
+        event(new StoryCreated($data['title']));
         return redirect()->back();
     }
 
@@ -85,7 +88,7 @@ class StoryController extends Controller
             'type'=>'required',
             'status'=>'required'
         ]);
-        Story::findOrFail($id)->update(['title'=>$request->title,'body'=>$request->body,'type'=>$request->type,'status'=>$request->status]);
+        Story::findOrFail($id)->update(['title'=>$request->title,'body'=>$request->body,'type'=>$request->type,'status'=>$request->status,'slug'=>Str::slug($request->title)]);
         return redirect()->back();
     }
 

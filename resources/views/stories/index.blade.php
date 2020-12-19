@@ -37,7 +37,7 @@
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <form action="{{ route('stories.destroy',$story->id) }}" name="s{{$story->id}}" method="POST">
+                                                    <form action="{{ route('stories.destroy',$story->id) }}" name="s{{$story->id}}" method="POST" class="mr-2">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{$story->id}}">
                                                         @method('DELETE')<button type="submit" class="btn btn-danger">DELETE</button>
