@@ -1,4 +1,4 @@
-<form action="{{ route('stories.update',$story->id) }}" name="forms" method="POST">
+<form action="{{ route('stories.update',$story->id) }}" name="forms" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -35,6 +35,11 @@
                             <option value="0"> No</option>
                             <option value="1" {{$story->status==1 ? 'selected' : ''}}> Yes</option>
                         </select>
+                    </div>
+                    <img src="{{$story->image}}" style="width: 50%; height: 150px">
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" name="image" class="form-control" id="image">
                     </div>
 
                 </div>

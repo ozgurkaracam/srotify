@@ -6,7 +6,7 @@
     </script>
 @endif
 
-<form action="{{route('stories.store')}}" name="form1" method="POST">
+<form action="{{route('stories.store')}}" name="form1" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="modal fade" id="createStory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -42,6 +42,10 @@
                             <option value="0"> No</option>
                             <option value="1"> Yes</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" name="image" class="form-control" id="image">
                     </div>
 
                 </div>
