@@ -41,6 +41,14 @@
                         <label for="image">Image</label>
                         <input type="file" name="image" class="form-control" id="image">
                     </div>
+                    <div class="form-check w-100">
+                        @foreach(\App\Models\Tag::all() as $tag)
+                            <input class="form-check-input" name="tags[]" {{ $story->tags->find($tag->id)!=null ? 'checked' : false  }} type="checkbox" value="{{$tag->id}}" id="{{$tag->id}}">
+                            <label class="form-check-label" for="{{$tag->id}}" >
+                                {{$tag->title}}
+                            </label><br>
+                        @endforeach
+                    </div>
 
                 </div>
 

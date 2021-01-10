@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\StoryExport;
 use App\Models\Story;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -19,10 +20,14 @@ class DashboardController extends Controller
     public function index(Request $request){
 
         $type=$request->input('type');
+        $tag=$request->input('tag');
         if(in_array($type,['short','long']))
             $stories=Story::where(['status'=>1,'type'=>$type])->orderBy('ID','DESC')->paginate(9);
         else
             $stories=Story::where(['status'=>1])->orderBy('ID','DESC')->paginate(9);
+       if(isset($tag))
+           $stories=Tag::where(['title'=>$tag])->first()->stories()->where(['status'=>1])->orderBy('ID','DESC')->paginate(2);
+
         return view('dashboard',compact('stories'));
 
     }

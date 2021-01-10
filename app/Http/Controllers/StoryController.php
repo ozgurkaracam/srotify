@@ -46,9 +46,12 @@ class StoryController extends Controller
             'status'=>'required',
             'image'=>'file|mimes:jpeg,png'
         ]);
-        $data['image']=Str::random(15).".".$request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move('images',$data['image']);
-        Auth::user()->stories()->create($data);
+        if(!empty($request->file('name'))) {
+            $data['image'] = Str::random(15) . "." . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move('images', $data['image']);
+        }
+        Auth::user()->stories()->create($data)->tags()->attach($request->tags);
+
         event(new StoryCreated($data['title']));
         return redirect()->back();
     }
@@ -85,16 +88,21 @@ class StoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $data=$request->validate([
             'title'=>'required',
             'body'=>'required',
             'type'=>'required',
             'status'=>'required',
             'image'=>'file|mimes:jpeg,png'
         ]);
-        $data['image']=Str::random(15).".".$request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move('images',$data['image']);
-        Story::findOrFail($id)->update(['title'=>$request->title,'body'=>$request->body,'type'=>$request->type,'status'=>$request->status,'slug'=>Str::slug($request->title),'image'=>$data['image']]);
+            if(!empty($request->file('name'))){
+                $data['image']=Str::random(15).".".$request->file('image')->getClientOriginalExtension();
+                $request->file('image')->move('images',$data['image']);
+                Story::findOrFail($id)->update(['title'=>$request->title,'body'=>$request->body,'type'=>$request->type,'status'=>$request->status,'slug'=>Str::slug($request->title),'image'=>$data['image']]);
+            }
+
+        Story::findOrFail($id)->update(['title'=>$request->title,'body'=>$request->body,'type'=>$request->type,'status'=>$request->status,'slug'=>Str::slug($request->title)]);
+        Story::findOrFail($id)->tags()->sync($request->tags);
         return redirect()->back();
     }
 
